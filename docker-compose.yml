@@ -1,0 +1,22 @@
+services:
+  bot:
+    build: .
+    container_name: business-card-bot
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_PATH: /app/data/bot.db
+    volumes:
+      # База SQLite хранится в именованном томе и переживает пересборку контейнера
+      - bot-data:/app/data
+    # Для режима webhook раскомментируйте и пробросьте порт за HTTPS-прокси
+    # ports:
+    #   - "3000:3000"
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+volumes:
+  bot-data:
